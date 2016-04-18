@@ -1,9 +1,9 @@
 class AddWall < ActiveRecord::Migration
   def change 
-    create_table :posts do |t|
+    create_table :songs do |t|
       t.string :title
       t.string :artist
-      t.string :song
+      t.string :link
       t.timestamps null: false
     end
   end
