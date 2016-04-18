@@ -1,9 +1,23 @@
+<div class="container-fluid">
+  <div class="jumbotron">
+    <h1>Music Wall</h1> 
+    <p>Check out songs people have posted, or post a new one yourself!</p> 
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="text-center">
+    <a href="/songs/new" class="btn btn-primary" role="button">Submit a Song</a>
+  </div>
+</div>
+
 <% @songs.each do |song| %>
-  <div class="song">
-    <h3><%= song.title %> <small>(Artist: <%= song.artist %>)</small></h3>
-    <p>
-      <a href="<%= song.link %>"> Song Link </a>
-    </p>
+  <div class="container-fluid">
+    <div class="song">
+      <h3><%= song.title %> <small>(Artist: <%= song.artist %>)</small></h3>
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe width="560" height="315" src="<%= song.link %>" frameborder="0" allowfullscreen> </iframe>
+        </div>
+    </div>
   </div>
 <% end %>
-<a href="/songs/new">Post a new song... Do it... you won't</a>
