@@ -13,11 +13,13 @@ get '/songs/new' do
 end
 
 post '/songs' do
+  
   @song = Song.new(
     title: params[:title],
     link: params[:link],
     artist: params[:artist]
   )
   @song.save
+  @song.update(link: @song.youtube_embed)
   redirect '/songs'
 end
