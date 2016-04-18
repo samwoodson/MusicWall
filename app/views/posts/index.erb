@@ -1,0 +1,8 @@
+<% @posts.each do |post| %>
+  <div class="post">
+    <h3><%= post.title %> <small>(Artist: <%= post.artist %>)</small></h3>
+    <p>
+      <%= post.song %>
+    </p>
+  </div>
+<% end %>
