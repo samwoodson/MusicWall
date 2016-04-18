@@ -9,9 +9,11 @@ class Song < ActiveRecord::Base
   def youtube_embed
     if link[/youtu\.be\/([^\?]*)/]
       @youtube_id = $1
-    else
+      self.link = "http://www.youtube.com/embed/#{@youtube_id}"
+    elsif
       link[/^.*((v\/)|(embed\/)|(watch\?))\??v?=?([^\&\?]*).*/]
       @youtube_id = $5
+      self.link = "http://www.youtube.com/embed/#{@youtube_id}"
     end
   end
 

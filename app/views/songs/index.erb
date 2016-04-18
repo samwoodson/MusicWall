@@ -8,15 +8,22 @@
   </div>
 </div>
 
-
-
 <% @songs.each do |song| %>
-  <div class="container-fluid">
-    <div class="song text-center">
-      <h3><%= song.title %> <small>(Artist: <%= song.artist %>)</small></h3>
+  <% if song.youtube_embed %>
+    <div class="container-fluid">
+      <div class="song text-center">
+        <h3><a href="/songs/<%= song.id %>"><%= song.title %></a> <small>(Artist: <%= song.artist %>)</small></h3>
         <div id='videoclipframe' class="embed-responsive embed-responsive-16by9">
-          <iframe width="560" height="315" src="http://www.youtube.com/embed/<%=song.link%>" frameborder="0" allowfullscreen> </iframe>
+          <iframe width="560" height="315" src="<%=song.link%>" frameborder="0" allowfullscreen> </iframe>
         </div>
+      </div>
     </div>
-  </div>
+  <% else %>
+    <div class="container-fluid">
+      <div class="song text-center">
+        <h3><a href="/songs/<%= song.id %>"><%= song.title %></a> <small>(Artist: <%= song.artist %>)</small></h3>
+        <a href="<%=song.link%>" class="btn btn-info" role="button">Link To Non-Youtube Video</a>
+      </div>
+    </div>
+  <% end %>
 <% end %>
