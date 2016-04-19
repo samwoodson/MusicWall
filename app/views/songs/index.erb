@@ -3,16 +3,20 @@
     <div class="text-center">
       <h1>Music Wall</h1> 
         <p>Check out songs people have posted, or post a new one yourself!</p>
-      <a href="/songs/new" class="btn btn-success" role="button">Submit a Song</a> 
+      <div class="container">
+      <a href="/songs/new" class="btn btn-success" role="button">Submit a Song</a>
+      </div>
+      <a href="/users/login" class="btn btn-primary" role="button">Sign In/Sign Up</a>
     </div>
   </div>
 </div>
 
 <% @songs.each do |song| %>
   <% if song.youtube_embed %>
-    <div class="container-fluid">
+    <div class="container">
       <div class="song text-center">
-        <h3><a href="/songs/<%= song.id %>"><%= song.title %></a> <small>(Artist: <%= song.artist %>)</small></h3>
+        <h3><a href="/songs/<%= song.id %>"><%= song.title %></a> <small>(Artist: <%= song.artist %>) Added by: <%= song.user.email %></small></h3>
+        <form class="form-inline" display="inline-block" action="/songs/upvote" method="POST"><button type="button" class="btn btn-success">Upvote!</button> </form>
         <div id='videoclipframe' class="embed-responsive embed-responsive-16by9">
           <iframe width="560" height="315" src="<%=song.link%>" frameborder="0" allowfullscreen> </iframe>
         </div>

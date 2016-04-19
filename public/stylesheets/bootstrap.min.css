@@ -10,3 +10,5 @@ box-shadow: 10px 10px #818181;
 -webkit-box-shadow: 10px 10px 10px #818181;
 -moz-box-shadow: 10px 10px 10px #818181;
 }
+
+body { padding-top: 100px; }

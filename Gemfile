@@ -7,9 +7,12 @@ gem 'activesupport'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'sinatra-activerecord'
+gem 'sinatra-flash'
 
 gem 'puma'
 gem 'tux'
+
+gem 'bcrypt'
 
 group :development, :test do
   gem 'pry'

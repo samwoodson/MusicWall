@@ -1,12 +1,24 @@
-<h1><%= @song.title %></h1>
+<h1 class="text-center"><%= @song.title %></h1>
 
-<p>
-  Artist: <%= @song.artist %>
-</p>
-
-<p>
-  <%= @song.link  %>
-</p>
+<% if @song.youtube_embed %>
+    <div class="container-fluid">
+      <div class="@song text-center">
+        <h3>(Artist: <%= @song.artist %>)</h3>
+        <div id='videoclipframe' class="embed-responsive embed-responsive-16by9">
+          <iframe width="560" height="315" src="<%=@song.link%>" frameborder="0" allowfullscreen> </iframe>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="container-fluid">
+      <div class="@song text-center">
+        <h3>(Artist: <%= @song.artist %>)</h3>
+        <a href="<%=@song.link%>" class="btn btn-info" role="button">Link To Non-Youtube Video</a>
+      </div>
+    </div>
+  <% end %>
 
 <hr/>
-<a href="/songs">Back to All Songs</a>
+<div class="text-center">
+  <a href="/songs" >Back to All Songs</a>
+</div>
