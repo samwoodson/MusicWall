@@ -33,7 +33,7 @@ end
 
 get '/songs/:id' do
   @song = Song.find params[:id]
-  @reviews = Review.where(song_id: params[:id])
+  @reviews = Review.where(song_id: params[:id]).order('created_at DESC')
   erb :'songs/show'
 end
 
@@ -92,6 +92,12 @@ post '/songs/upvote/:id' do
     )
   @upvote.save
   redirect "/songs/#{params[:id]}"
+end
+
+delete '/reviews/delete/:id' do
+  song_id = Review.find(params[:id]).song_id
+  Review.find(params[:id]).destroy
+  redirect "/songs/#{song_id}"
 end
 
 post '/reviews/new/:id' do

@@ -1,8 +1,7 @@
 <h1 class="text-center"><%= @song.title %></h1>
 
 <div class="container-fluid text-center">
-  <% if current_user %>
-  <!-- && @song.votes.pluck(:user_id).exclude? current_user.id -->
+  <% if current_user && @song.votes.pluck(:user_id).exclude?(current_user.id)%>
     <form action="/songs/upvote/<%=@song.id%>" method="post">
       <button name="foo" value="upvote" class="btn btn-success">Upvote this song!</button>
     </form>
@@ -27,39 +26,65 @@
   </div>
 <% end %>
 
-<% if current_user %>
+<% if current_user && @song.reviews.pluck(:user_id).exclude?(current_user.id) %>
   <div class="container">
     <div class="row" style="margin-top:40px; width; auto">
       <div class="col-md-6 col-md-offset-3">
         <div class="well well-sm">
-              <div class="text-right">
-                  <a class="btn btn-success btn-green" href="#reviews-anchor" id="open-review-box">Leave a Review</a>
-              </div>
-              <div class="row" id="post-review-box" style="display:none;">
-                  <div class="col-md-12">
-                      <form accept-charset="UTF-8" action="/reviews/new/<%=@song.id%>" method="post">
-                          <input id="ratings-hidden" name="rating" type="hidden"> 
-                          <textarea class="form-control animated" cols="50" id="new-review" name="message" placeholder="Enter your review here..." rows="5"></textarea>
-          
-                          <div class="text-right">
-                              <div class="stars starrr" data-rating="0"></div>
-                              <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display:none; margin-right: 10px;">
-                              <span class="glyphicon glyphicon-remove"></span>Cancel</a>
-                              <button class="btn btn-success btn-lg" type="submit">Save</button>
-                          </div>
-                      </form>
-                  </div>
-              </div>
-          </div> 
+          <div class="text-right">
+            <a class="btn btn-success btn-green" href="#reviews-anchor" id="open-review-box">Leave a Review</a>
+          </div>
+          <div class="row" id="post-review-box" style="display:none;">
+            <div class="col-md-12">
+              <form accept-charset="UTF-8" action="/reviews/new/<%=@song.id%>" method="post">
+                <input id="ratings-hidden" name="rating" type="hidden"> 
+                <textarea class="form-control animated" cols="50" id="new-review" name="message" placeholder="Enter your review here..." rows="5"></textarea>
+                <div class="text-right">
+                  <div class="stars starrr" data-rating="0"></div>
+                  <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display:none; margin-right: 10px;">
+                  <span class="glyphicon glyphicon-remove"></span>Cancel</a>
+                  <button class="btn btn-success btn-lg" type="submit">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div> 
       </div>
     </div>
   </div>
-<% else %>
+<% end %>
+
+<% unless current_user %>
   <h3 class="text-center">You must be logged in to leave a review, <a href="/users/login">sign-in</a> or <a href="/users/new_user">sign-up</a>!</h3>
 <% end %>
 
 <% @reviews.each do |review| %>
-  <p><%= message %> </p>
+  <div class="clearfix"></div>
+    <hr>
+    <ul class="media-list">
+      <li class="media">
+        <a href="#" class="pull-left">
+          <img src="" alt="" class="img-rounded">
+        </a>
+
+        <div class="media-body">
+          <p>
+            <%= review.message %>
+          </p>
+          <span class="text-muted">
+            <small class="text-muted">Review by <i><%= review.user[:email] %></i> on <%= review.created_at %></small>
+          </span>
+          <% if current_user && current_user.id == review.user.id %>
+            <br />
+            <form action="/reviews/delete/<%=review.id%>"  method="post">
+              <input name="_method" value="delete" type="hidden"></input>
+              <button class="btn btn-danger pull-left" role="button">Delete</button>
+            </form>
+          <% end %>
+          <br />
+        </div>
+      </li>
+    </ul>
 <% end %>
 
 
