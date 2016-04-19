@@ -1,6 +1,7 @@
 <h1 class="text-center"><%= @song.title %></h1>
-<div class="container text-center">
+<div class="container-fluid text-center">
   <% if current_user %>
+  <!-- && @song.votes.pluck(:user_id).exclude? current_user.id -->
     <form action="/songs/upvote/<%=@song.id%>" method="post">
       <button name="foo" value="upvote" class="btn btn-success">Upvote this song!</button>
     </form>

@@ -10,13 +10,19 @@ helpers do
   end
 end
 
+before do
+  @user = nil
+  if session[:user_id]
+    @user = User.find(session[:user_id])
+  end
+end
+
 get '/' do
   redirect '/songs'
 end
 
 get '/songs' do
-  @songs = Song.select("songs.id, songs.link, songs.title, songs.artist, count(votes.id) AS votes_count").
-  joins(:votes).group("songs.id").order('votes_count DESC')
+  @songs = Song.joins("left outer join votes on songs.id = votes.song_id").group('songs.id').order('COUNT(votes.id) DESC')
   erb :'songs/index'
 end
 
@@ -48,13 +54,12 @@ end
 
 post '/users/login' do
   user = User.find_by(email: params[:email])
-
-  if user && user.password == params[:password]
+  if user.password == params[:password]
     session[:user_id] = user.id
     redirect '/'
   else
     # implement @login_error
-    redirect '/'
+    redirect '/users/login'
   end
 end
 
