@@ -1,9 +1,16 @@
 <h1 class="text-center"><%= @song.title %></h1>
-
+<div class="container text-center">
+  <% if current_user %>
+    <form action="/songs/upvote/<%=@song.id%>" method="post">
+      <button name="foo" value="upvote" class="btn btn-success">Upvote this song!</button>
+    </form>
+  <% end %>
+  <h3>Votes:<%= current_votes(@song.id)%> </h3>
+</div>
 <% if @song.youtube_embed %>
     <div class="container-fluid">
       <div class="@song text-center">
-        <h3>(Artist: <%= @song.artist %>)</h3>
+        <h3>Artist: <%= @song.artist %> <small>(Added by: <%= @song.user.email %>)</small></h3>
         <div id='videoclipframe' class="embed-responsive embed-responsive-16by9">
           <iframe width="560" height="315" src="<%=@song.link%>" frameborder="0" allowfullscreen> </iframe>
         </div>

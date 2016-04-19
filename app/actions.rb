@@ -5,6 +5,9 @@ helpers do
   def current_user
     User.find(session[:user_id]) if session[:user_id]
   end
+  def current_votes(id)
+    Vote.where(song_id: id).count
+  end
 end
 
 get '/' do
@@ -12,7 +15,8 @@ get '/' do
 end
 
 get '/songs' do
-  @songs = Song.all.order(created_at: :desc)
+  @songs = Song.select("songs.id, songs.link, songs.title, songs.artist, count(votes.id) AS votes_count").
+  joins(:votes).group("songs.id").order('votes_count DESC')
   erb :'songs/index'
 end
 
@@ -74,10 +78,11 @@ post '/songs' do
   redirect '/songs'
 end
 
-post '/songs/upvote' do
+post '/songs/upvote/:id' do
   @upvote = Vote.new(
     user_id: current_user.id,
-    song_id: @song.id
+    song_id: params[:id]
     )
-  redirect "/show"
+  @upvote.save
+  redirect "/songs/#{params[:id]}"
 end
