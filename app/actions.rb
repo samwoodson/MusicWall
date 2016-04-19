@@ -22,7 +22,8 @@ get '/' do
 end
 
 get '/songs' do
-  @songs = Song.joins("left outer join votes on songs.id = votes.song_id").group('songs.id').order('COUNT(votes.id) DESC')
+  @songs = Song.all.to_a
+  @songs.sort_by!{ |song| -song.votes.count }
   erb :'songs/index'
 end
 
@@ -32,6 +33,7 @@ end
 
 get '/songs/:id' do
   @song = Song.find params[:id]
+  @reviews = Review.where(song_id: params[:id])
   erb :'songs/show'
 end
 
@@ -77,7 +79,7 @@ post '/songs' do
     title: params[:title],
     link: params[:link],
     artist: params[:artist],
-    user_id: current_user.id
+    user_id: @user.id
   )
   @song.save
   redirect '/songs'
@@ -85,9 +87,21 @@ end
 
 post '/songs/upvote/:id' do
   @upvote = Vote.new(
-    user_id: current_user.id,
+    user_id: @user.id,
     song_id: params[:id]
     )
   @upvote.save
   redirect "/songs/#{params[:id]}"
 end
+
+post '/reviews/new/:id' do
+  @review = Review.new(
+    user_id: @user.id,
+    song_id: params[:id],
+    message: params[:message]
+    )
+  @review.save
+  redirect "/songs/#{params[:id]}"
+end
+
+

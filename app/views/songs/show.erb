@@ -1,4 +1,5 @@
 <h1 class="text-center"><%= @song.title %></h1>
+
 <div class="container-fluid text-center">
   <% if current_user %>
   <!-- && @song.votes.pluck(:user_id).exclude? current_user.id -->
@@ -9,22 +10,58 @@
   <h3>Votes:<%= current_votes(@song.id)%> </h3>
 </div>
 <% if @song.youtube_embed %>
-    <div class="container-fluid">
-      <div class="@song text-center">
-        <h3>Artist: <%= @song.artist %> <small>(Added by: <%= @song.user.email %>)</small></h3>
-        <div id='videoclipframe' class="embed-responsive embed-responsive-16by9">
-          <iframe width="560" height="315" src="<%=@song.link%>" frameborder="0" allowfullscreen> </iframe>
-        </div>
+  <div class="container-fluid">
+    <div class="@song text-center">
+      <h3>Artist: <%= @song.artist %> <small>(Added by: <%= @song.user.email %>)</small></h3>
+      <div id='videoclipframe' class="embed-responsive embed-responsive-16by9">
+        <iframe width="560" height="315" src="<%=@song.link%>" frameborder="0" allowfullscreen> </iframe>
       </div>
     </div>
-  <% else %>
-    <div class="container-fluid">
-      <div class="@song text-center">
-        <h3>(Artist: <%= @song.artist %>)</h3>
-        <a href="<%=@song.link%>" class="btn btn-info" role="button">Link To Non-Youtube Video</a>
+  </div>
+<% else %>
+  <div class="container-fluid">
+    <div class="@song text-center">
+      <h3>(Artist: <%= @song.artist %>)</h3>
+      <a href="<%=@song.link%>" class="btn btn-info" role="button">Link To Non-Youtube Video</a>
+    </div>
+  </div>
+<% end %>
+
+<% if current_user %>
+  <div class="container">
+    <div class="row" style="margin-top:40px; width; auto">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="well well-sm">
+              <div class="text-right">
+                  <a class="btn btn-success btn-green" href="#reviews-anchor" id="open-review-box">Leave a Review</a>
+              </div>
+              <div class="row" id="post-review-box" style="display:none;">
+                  <div class="col-md-12">
+                      <form accept-charset="UTF-8" action="/reviews/new/<%=@song.id%>" method="post">
+                          <input id="ratings-hidden" name="rating" type="hidden"> 
+                          <textarea class="form-control animated" cols="50" id="new-review" name="message" placeholder="Enter your review here..." rows="5"></textarea>
+          
+                          <div class="text-right">
+                              <div class="stars starrr" data-rating="0"></div>
+                              <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display:none; margin-right: 10px;">
+                              <span class="glyphicon glyphicon-remove"></span>Cancel</a>
+                              <button class="btn btn-success btn-lg" type="submit">Save</button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div> 
       </div>
     </div>
-  <% end %>
+  </div>
+<% else %>
+  <h3 class="text-center">You must be logged in to leave a review, <a href="/users/login">sign-in</a> or <a href="/users/new_user">sign-up</a>!</h3>
+<% end %>
+
+<% @reviews.each do |review| %>
+  <p><%= message %> </p>
+<% end %>
+
 
 <hr/>
 <div class="text-center">

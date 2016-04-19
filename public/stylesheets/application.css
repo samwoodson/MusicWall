@@ -1,0 +1,21 @@
+ .animated {
+    -webkit-transition: height 0.2s;
+    -moz-transition: height 0.2s;
+    transition: height 0.2s;
+}
+
+.stars
+{
+    margin: 20px 0;
+    font-size: 24px;
+    color: #d17581;
+}
+
+#videoclipframe{
+box-shadow: 10px 10px #818181;
+-webkit-box-shadow: 10px 10px 10px #818181;
+-moz-box-shadow: 10px 10px 10px #818181;
+}
+
+body { padding-top: 80px; padding-bottom: 80px; }
+
