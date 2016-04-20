@@ -28,7 +28,7 @@
 
 <% if current_user && @song.reviews.pluck(:user_id).exclude?(current_user.id) %>
   <div class="container">
-    <div class="row" style="margin-top:40px; width; auto">
+    <div class="row" style="margin-top:40px; width: auto;">
       <div class="col-md-6 col-md-offset-3">
         <div class="well well-sm">
           <div class="text-right">
@@ -67,10 +67,18 @@
           <img src="" alt="" class="img-rounded">
         </a>
 
+
         <div class="media-body">
           <p>
+            <% if review.stars %>
+              <% review.stars.times do |span| %>
+                <span class="glyphicon glyphicon-star"></span> 
+                <!-- %='-empty' if i>review.stars%> -->
+              <% end %> 
+            <% end %>
             <%= review.message %>
           </p>
+           
           <span class="text-muted">
             <small class="text-muted">Review by <i><%= review.user[:email] %></i> on <%= review.created_at %></small>
           </span>

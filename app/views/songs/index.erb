@@ -3,15 +3,16 @@
     <div class="text-center">
       <h1>Music Wall</h1> 
         
-      <div class="container">
+      <div class="container-fluid">
       <% if current_user %>
       <p>Check out the most upvoted songs!</p>
         <a href="/songs/new" class="btn btn-success" role="button">Submit a Song</a>
       <% else %>
         <p>Check out the most upvoted songs, or sign up to post a new one!</p>
-        <a href="/users/new_user" class="btn btn-primary" role="button">Sign Up</a>
-        <br />
-        <a href="/users/login" class="btn btn-success" role="button">Sign In</a>
+        <div class="container-fluid centered">
+          <a href="/users/new_user" class="btn btn-primary" role="button">Sign Up</a>
+          <a href="/users/login" class="btn btn-success" role="button">Sign In</a>
+        </div>
       <% end %>
       </div>
     </div>

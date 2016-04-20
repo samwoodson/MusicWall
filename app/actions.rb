@@ -38,6 +38,9 @@ get '/songs/:id' do
 end
 
 get '/users/login' do
+  if params[:redirect]
+    session[:redirect] = params[:redirect]
+  end
   erb :'users/login'
 end
 
@@ -46,11 +49,13 @@ get '/users/new_user' do
 end
 
 get '/users/home' do
+  @songs = Song.where(user_id: current_user.id)
   erb :'users/home'
 end
 
 get '/users/logout' do
   session[:user_id] = nil if current_user
+  session[:redirect] =  nil
   redirect '/'
 end
 
@@ -58,7 +63,11 @@ post '/users/login' do
   user = User.find_by(email: params[:email])
   if user.password == params[:password]
     session[:user_id] = user.id
-    redirect '/'
+    if session[:redirect]
+      redirect session[:redirect]
+    else
+      redirect '/'
+    end
   else
     # implement @login_error
     redirect '/users/login'
@@ -104,7 +113,8 @@ post '/reviews/new/:id' do
   @review = Review.new(
     user_id: @user.id,
     song_id: params[:id],
-    message: params[:message]
+    message: params[:message],
+    stars: params[:rating]
     )
   @review.save
   redirect "/songs/#{params[:id]}"
